@@ -16,14 +16,20 @@ import java.util.concurrent.TimeUnit;
 public class ScheduledExecutorExercise {
     public static void main(String[] args) {
         // TODO#5-2-1: 1개의 스레드를 가진 ScheduledExecutorService를 생성하세요.
-        ScheduledExecutorService scheduler = null;
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
         log.info("Tasks are being scheduled...");
 
         // TODO#5-2-2: 2초 뒤에 "Delayed Task executed!"를 출력하는 작업을 예약하세요.
+        scheduler.schedule(() -> log.info("Delayed Task executed!"), 2, TimeUnit.SECONDS);
 
         // TODO#5-2-3: 1초 대기 후, 3초마다 "Periodic Task executed!"를 출력하는 작업을 예약하세요.
+        scheduler.scheduleAtFixedRate(() -> log.info("Periodic Task executed!"), 1, 3, TimeUnit.SECONDS);
 
         // TODO#5-2-4: 10초 후에 scheduler를 종료(shutdown)하도록 설정하세요.
+        scheduler.schedule(() -> {
+            log.info("Shutting down Scheduler...");
+            scheduler.shutdown();
+        }, 10, TimeUnit.SECONDS);
     }
 }

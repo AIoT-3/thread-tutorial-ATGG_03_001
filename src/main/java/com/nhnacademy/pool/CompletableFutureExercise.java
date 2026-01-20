@@ -17,5 +17,10 @@ public class CompletableFutureExercise {
         // TODO#5-3-2: thenApply를 사용하여 뒤에 " World"를 추가하세요.
         // TODO#5-3-3: thenAccept를 사용하여 최종 결과를 로그로 출력하세요.
         // TODO#5-3-4: join을 사용하여 모든 작업이 완료될 때까지 기다리세요.
+
+        CompletableFuture.supplyAsync(() -> "Hello")
+                .thenApply(data -> data + "World")
+                .thenAccept(result -> log.info("{}", result))
+                .join();
     }
 }

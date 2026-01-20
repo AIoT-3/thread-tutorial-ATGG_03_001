@@ -19,8 +19,13 @@ public class ThreadCreationExercise {
         // 힌트: Thread thread = new Thread(new MyRunnable());
         // 참고: https://www.baeldung.com/java-runnable-vs-extending-thread
 
+        Thread thread = new Thread(new MyRunnable());
+
+        thread.start();
+
         log.info("메인 스레드 종료");
     }
+
 }
 
 // TODO#2-2: Runnable 인터페이스를 구현하는 MyRunnable 클래스를 아래에 작성해보세요.
@@ -31,3 +36,14 @@ public class ThreadCreationExercise {
 //         // 로그 출력 등 작업 수행
 //     }
 // }
+
+@Slf4j
+class MyRunnable implements Runnable {
+
+    @Override
+    public void run() {
+        log.info("MyRunnable 시작");
+
+        log.info("MyRunnable 종료");
+    }
+}

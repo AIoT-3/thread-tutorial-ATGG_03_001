@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ThreadInterruptionExercise {
+
     public static void main(String[] args) throws InterruptedException {
         // TODO#2-3: 10초 동안 1초 간격으로 숫자를 출력하는 스레드를 만드세요.
         // 메인 스레드에서 3초 뒤에 해당 스레드를 중단(interrupt)시키고 
@@ -19,11 +20,28 @@ public class ThreadInterruptionExercise {
         // 1. while (!Thread.currentThread().isInterrupted()) 루프를 사용하세요.
         // 2. Thread.sleep() 시 발생하는 InterruptedException을 catch하여 interrupt 상태를 다시 설정하세요.
         // 참고: https://www.baeldung.com/java-thread-stop
+        Thread myThread = new Thread(() -> {
+            int cnt = 0;
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    Thread.sleep(1000);
+
+                    log.info("{}", ++cnt);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+
+                log.info("스레드: 작업이 중단되었습니다.");
+            }
+        });
+
+        myThread.start();
 
         log.info("메인: 3초 대기 중...");
         Thread.sleep(3000);
 
         log.info("메인: 작업 중단 신호를 보냅니다.");
-        // 여기에 스레드 중단 코드를 작성하세요.
+
+        myThread.interrupt();
     }
 }

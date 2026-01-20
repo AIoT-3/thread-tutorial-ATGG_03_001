@@ -44,6 +44,9 @@ public class AtomicExercise {
         // counter의 값이 20,000일 경우 0으로 초기화하는 코드를 작성해보세요.
         // 초기화 성공 시 "카운터가 0으로 초기화되었습니다."라고 로그를 출력하세요.
         // 참고: https://www.baeldung.com/java-atomic-variables
+        if (exercise.counter.compareAndSet(20000, 0)) {
+            log.info("카운터가 0으로 초기화되었습니다.");
+        }
         
         log.info("초기화 후 카운트: {}", exercise.getCounter());
     }

@@ -12,11 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 public class VisibilityExercise {
     // TODO#3-3-1: 아래 flag 변수에 volatile을 추가하기 전과 후의 차이를 관찰하세요.
     // volatile이 없으면 메인 스레드에서 변경한 flag 값이 작업 스레드에 즉시 반영되지 않을 수 있습니다.
-    private static boolean flag = false;
+    private static volatile boolean flag = false;
 
     public static void main(String[] args) throws InterruptedException {
         Thread worker = new Thread(() -> {
             log.info("작업 스레드 시작 (flag 대기 중...)");
+
             while (!flag) {
                 // flag가 true가 될 때까지 무한 루프
                 // 주의: 루프 안에 코드가 없으면 최적화로 인해 flag 값을 다시 읽지 않을 수 있습니다.

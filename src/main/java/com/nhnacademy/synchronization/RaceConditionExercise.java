@@ -17,7 +17,9 @@ public class RaceConditionExercise {
         // TODO#3-1: 이 메소드에 적절한 동기화(synchronized) 처리를 하여 
         // 여러 스레드가 동시에 호출해도 데이터가 유실되지 않도록 하세요.
         // 참고: https://www.baeldung.com/java-synchronized
-        counter++;
+        synchronized (this) {
+            counter++;
+        }
     }
 
     public int getCounter() {
@@ -28,12 +30,8 @@ public class RaceConditionExercise {
         RaceConditionExercise exercise = new RaceConditionExercise();
 
         // 10,000번씩 더하는 두 개의 스레드 생성
-        Thread t1 = new Thread(() -> {
-            for (int i = 0; i < 10000; i++) exercise.increment();
-        });
-        Thread t2 = new Thread(() -> {
-            for (int i = 0; i < 10000; i++) exercise.increment();
-        });
+        Thread t1 = new Thread(exercise::addValueForLoop);
+        Thread t2 = new Thread(exercise::addValueForLoop);
 
         t1.start();
         t2.start();
@@ -47,6 +45,12 @@ public class RaceConditionExercise {
             log.info("성공: 데이터 정합성이 유지되었습니다.");
         } else {
             log.error("실패: 데이터가 유실되었습니다.");
+        }
+    }
+
+    private void addValueForLoop() {
+        for (int i = 0; i < 10000; i++) {
+            increment();
         }
     }
 }

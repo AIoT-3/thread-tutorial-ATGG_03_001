@@ -15,7 +15,7 @@ public class CountDownLatchExercise {
     public static void main(String[] args) throws InterruptedException {
         int workerCount = 3;
         // TODO#4-4-1: workerCount만큼의 숫자를 가진 CountDownLatch를 생성하세요.
-        CountDownLatch latch = null;
+        CountDownLatch latch = new CountDownLatch(workerCount);
 
         for (int i = 0; i < workerCount; i++) {
             int workerId = i;
@@ -26,6 +26,7 @@ public class CountDownLatchExercise {
                     log.info("Worker {} is ready!", workerId);
                     
                     // TODO#4-4-2: 준비가 완료되었음을 알리기 위해 latch의 숫자를 줄이세요.
+                    latch.countDown();
                     
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -36,6 +37,7 @@ public class CountDownLatchExercise {
         log.info("Main thread is waiting for all workers to be ready...");
         
         // TODO#4-4-3: 모든 작업자가 준비될 때까지 기다리세요.
+        latch.await();
         
         log.info("All workers are ready! Let's start the main task.");
     }

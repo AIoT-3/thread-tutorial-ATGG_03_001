@@ -19,17 +19,30 @@ public class ReadWriteLockExercise {
     private final Map<String, String> cache = new HashMap<>();
     
     // TODO#4-3-1: ReadWriteLock과 그에 따른 readLock, writeLock을 선언하세요.
-    private final ReadWriteLock rwLock = null;
-    private final Lock readLock = null;
-    private final Lock writeLock = null;
+    private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
+    private final Lock readLock = rwLock.readLock();
+    private final Lock writeLock = rwLock.writeLock();
 
     public String get(String key) {
         // TODO#4-3-2: readLock을 사용하여 데이터를 안전하게 가져오도록 구현하세요.
-        return null;
+        readLock.lock();
+
+        try {
+            return cache.get(key);
+        } finally {
+            readLock.unlock();
+        }
     }
 
     public void put(String key, String value) {
         // TODO#4-3-3: writeLock을 사용하여 데이터를 안전하게 저장하도록 구현하세요.
+        writeLock.lock();
+
+        try {
+            cache.put(key, value);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     public static void main(String[] args) {

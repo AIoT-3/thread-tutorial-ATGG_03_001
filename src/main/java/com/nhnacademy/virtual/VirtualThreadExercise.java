@@ -1,6 +1,8 @@
 package com.nhnacademy.virtual;
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -18,7 +20,24 @@ public class VirtualThreadExercise {
         // 전체 작업이 완료되는 데 걸리는 총 시간을 측정하여 출력하세요.
         // 힌트: Executors.newVirtualThreadPerTaskExecutor()를 사용하면 편리합니다.
         // 참고: https://www.baeldung.com/java-21-virtual-threads
-        
         log.info("가상 스레드 실습 준비 완료");
+
+        long start = System.currentTimeMillis();
+
+        try (ExecutorService threadPool = Executors.newVirtualThreadPerTaskExecutor()) {
+            for (int i = 0; i < 10000; i++) {
+                threadPool.submit(() -> {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                });
+            }
+        }
+
+        long end = System.currentTimeMillis();
+
+        log.info("수행 시간: {}ms", end - start);
     }
 }

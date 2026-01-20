@@ -20,12 +20,19 @@ public class SimpleBlockingQueueExercise<T> {
         this.capacity = capacity;
     }
 
+    private void printQueueSize() {
+        log.info("Queue Size: {}", queue.size());
+    }
+
     public synchronized void put(T item) throws InterruptedException {
         while (queue.size() == capacity) {
             wait(); 
         }
         queue.add(item);
+
         // 여기에 현재 큐 크기를 로그로 출력하는 코드를 추가하세요.
+        printQueueSize();
+
         notifyAll(); 
     }
 
@@ -34,8 +41,12 @@ public class SimpleBlockingQueueExercise<T> {
             wait(); 
         }
         T item = queue.poll();
+
         // 여기에 현재 큐 크기를 로그로 출력하는 코드를 추가하세요.
-        notifyAll(); 
+        printQueueSize();
+
+        notifyAll();
+
         return item;
     }
 

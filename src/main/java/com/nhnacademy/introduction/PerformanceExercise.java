@@ -23,6 +23,17 @@ public class PerformanceExercise {
         // 3. 모든 스레드에 대해 start()를 호출하여 실행을 시작하세요.
         // 4. 모든 스레드에 대해 join()을 호출하여 메인 스레드가 기다리게 하세요.
         // 참고: https://www.baeldung.com/java-start-thread
+        Thread t1 = new Thread(() -> runTask("t1"));
+        Thread t2 = new Thread(() -> runTask("t2"));
+        Thread t3 = new Thread(() -> runTask("t3"));
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        t1.join();
+        t2.join();
+        t3.join();
 
         long end = System.currentTimeMillis();
         log.info("병렬 실행 총 소요 시간: {}ms", (end - start));

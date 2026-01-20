@@ -22,6 +22,19 @@ public class SharedBufferExercise {
      */
     public void produce(int value) throws InterruptedException {
         // 여기에 코드를 작성하세요.
+        synchronized (this) {
+            while (queue.size() == CAPACITY) {
+                log.info("큐가 가득 찼습니다. 생산자가 기다립니다.");
+
+                wait();
+            }
+
+            queue.offer(value);
+
+            log.info("생산됨: {}", value);
+
+            notifyAll();
+        }
     }
 
     /**
@@ -29,9 +42,21 @@ public class SharedBufferExercise {
      * TODO#3-2-2: synchronized를 적용하고, 큐가 비어있을 때 wait()를 호출하도록 구현하세요.
      * 데이터를 꺼낸 후에는 notifyAll()을 호출해야 합니다.
      */
-    public int consume() throws InterruptedException {
+    public void consume() throws InterruptedException {
         // 여기에 코드를 작성하세요.
-        return 0;
+        synchronized (this) {
+            while (queue.isEmpty()) {
+                log.info("큐가 비었습니다. 소비자가 기다립니다.");
+
+                wait();
+            }
+
+            int value = queue.poll();
+
+            log.info("소비됨: {}", value);
+
+            notifyAll();
+        }
     }
 
     public static void main(String[] args) {

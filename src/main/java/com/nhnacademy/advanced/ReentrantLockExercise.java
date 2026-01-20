@@ -30,6 +30,18 @@ public class ReentrantLockExercise {
         }
     }
 
+    public void tryIncrement() {
+        try {
+            if (lock.tryLock(1, TimeUnit.SECONDS)) {
+                counter++;
+            } else {
+                log.info("락 획득 시간 초과");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     public static void main(String[] args) throws InterruptedException {
         ReentrantLockExercise exercise = new ReentrantLockExercise();
 
@@ -45,8 +57,9 @@ public class ReentrantLockExercise {
         // 획득 성공 시에는 counter를 1 증가시키고 락을 해제해야 합니다.
         // 참고: https://www.baeldung.com/java-concurrent-locks
         Thread t2 = new Thread(() -> {
-            log.info("Worker-2 가 락 획득을 시도합니다.");
+            log.info("Worker-2가 락 획득을 시도합니다.");
             // 여기에 작성하세요.
+            exercise.tryIncrement();
         }, "Worker-2");
 
         t2.start();
